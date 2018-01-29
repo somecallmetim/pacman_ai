@@ -117,9 +117,10 @@ def depthFirstSearch(problem):
                     # pushes tuple onto unexploredTiles stack that records tile's location and path
                     unexploredTiles.push((successor[0], currentTile[1] + [successor[1]]))
 
-
+            # if you run out of tiles on the map, something somewhere has gone wrong :(
             if unexploredTiles.isEmpty():
                 return []
+            # get next unexplored tile
             else:
                 currentTile = unexploredTiles.pop()
 
@@ -154,8 +155,10 @@ def breadthFirstSearch(problem):
                     unexploredTiles.push((successor[0], currentTile[1] + [successor[1]]))
 
 
+            # if you run out of tiles on the map, something somewhere has gone wrong :(
             if unexploredTiles.isEmpty():
                 return []
+            # get next unexplored tile
             else:
                 currentTile = unexploredTiles.pop()
 
