@@ -96,7 +96,6 @@ def depthFirstSearch(problem):
 
     # currentTile contains a triple that has it's coordinates and
     # the path that was used to get to it (extremely important!).
-    # third argument has been placed solely to stay consistent with incoming data
     currentTile = (problem.getStartState(), [])
 
     while True:
@@ -133,7 +132,6 @@ def breadthFirstSearch(problem):
 
     # currentTile contains a triple that has it's coordinates and
     # the path that was used to get to it (extremely important!).
-    # third argument has been placed solely to stay consistent with incoming data
     currentTile = (problem.getStartState(), [])
 
     while True:
@@ -154,7 +152,6 @@ def breadthFirstSearch(problem):
                     # pushes tuple onto unexploredTiles stack that records tile's location and path
                     unexploredTiles.push((successor[0], currentTile[1] + [successor[1]]))
 
-
             # if you run out of tiles on the map, something somewhere has gone wrong :(
             if unexploredTiles.isEmpty():
                 return []
@@ -165,7 +162,46 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    # this list keeps track of the tiles we've already explored
+    exploredTiles = []
+
+    # stores tiles we haven't checked yet
+    unexploredTiles = util.PriorityQueue()
+
+    # currentTile contains a triple that has it's coordinates and
+    # the path that was used to get to it (extremely important!).
+    # last argument is the tile's priority queue value
+    currentTile = (problem.getStartState(), [], 0)
+
+    while True:
+        # checks to see if the location of the current tile matches the position of our goal tile
+        if problem.isGoalState(currentTile[0]):
+            # returns path that got us to the goal tile
+            return currentTile[1]
+        else:
+            # store's current location into our exploredTiles list
+            exploredTiles.append(currentTile[0])
+
+            # successors is a list of 'successors' which are triples that contain neighboring node data
+            successors = problem.getSuccessors(currentTile[0])
+
+
+            for successor in successors:
+                if successor[0] not in exploredTiles:
+                    # getting the new path and cost here for easier readability
+                    newPath = currentTile[1] + [successor[1]]
+                    newCost = currentTile[2] + successor[2]
+                    # pushes triple onto unexploredTiles stack that records tile's location and path
+                    # also passes cost in for the priority queue to use
+                    unexploredTiles.push((successor[0], newPath, newCost), newCost)
+
+            # if you run out of tiles on the map, something somewhere has gone wrong :(
+            if unexploredTiles.isEmpty():
+                return []
+            # get next unexplored tile
+            else:
+                currentTile = unexploredTiles.pop()
 
 def nullHeuristic(state, problem=None):
     """
